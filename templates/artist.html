@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist</title>
+</head>
+
+<body>
+    <div>     
+        <img src="{{ .Image}}"><br>
+        <h4>Name: {{.Name}}</h4><br>
+        <span>{{range .Members}}{{.}} <br> {{end}}</span>
+        <h4>Creation Date: {{.CreationDate}}</h4>
+        <h4>First Album: {{.FirstAlbum}}</h4>
+        <h4>Concert Dates: {{index .ConcertDates.Dates}}</h4>
+        <h4>Locations: {{index .Locations.Locations}} </h4>
+        <h4>Relations: {{index .Relations.DatesLocations}}</h4>
+
+    </div>
+
+</body>
+
+</html>
+
+

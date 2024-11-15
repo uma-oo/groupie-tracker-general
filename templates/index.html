@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artists</title>
+</head>
+<body>
+    <div>
+    {{range .}} 
+    
+    <a href="http://localhost:3535/artists?id={{.Id}}"><img src="{{ .Image}}" alt="Image Band"></a><br>
+    <h3 >{{ .Name}}</h3>
+
+    
+    {{end}}
+
+</div>
+</body>
+</html>
