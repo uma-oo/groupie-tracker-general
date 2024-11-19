@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"regexp"
 	"strconv"
@@ -22,7 +21,7 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 	wait_group.Add(1)
 	go FetchData(&Artist, &wait_group)
 	wait_group.Wait()
-	renderTemplate(w, "index.html", Artist,  http.StatusOK)
+	renderTemplate(w, "index.html", Artist, http.StatusOK)
 }
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +37,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 		_, ok := Artist[user_id-1].Locations.(string)
 		if ok {
-			fmt.Println("Fetched here ")
 			wait_group.Add(3)
 			go FetchData(&location, &wait_group, Artist[user_id-1].Locations.(string))
 			go FetchData(&dates, &wait_group, Artist[user_id-1].ConcertDates.(string))

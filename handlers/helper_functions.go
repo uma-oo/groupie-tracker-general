@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -18,7 +19,9 @@ func renderTemplate(w http.ResponseWriter, tmp string, data interface{}, status 
 		fmt.Fprint(w, "<h1>Internal Server Error 500</h1>")
 		return
 	}
-	err = temp.Execute(w, data)
+	var buf bytes.Buffer
+
+	err = temp.Execute(&buf, data)
 	if err != nil {
 		fmt.Println("Error there", err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -27,6 +30,7 @@ func renderTemplate(w http.ResponseWriter, tmp string, data interface{}, status 
 
 	}
 	w.WriteHeader(status)
+	w.Write(buf.Bytes())
 }
 
 // working with maps here but if it has to be a struct it will be more efficient
