@@ -6,23 +6,27 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"sync"
 	"text/template"
 )
 
-func renderTemplate(w http.ResponseWriter, tmp string, data interface{}) {
+func renderTemplate(w http.ResponseWriter, tmp string, data interface{}, status int) {
 	temp, err := template.ParseFiles("./templates/" + tmp)
 	if err != nil {
-		fmt.Println()
+		fmt.Println("Error here", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprint(w, "<h1>Internal Server Error 500</h1>")
 		return
 	}
 	err = temp.Execute(w, data)
 	if err != nil {
+		fmt.Println("Error there", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprint(w, "<h1>Internal Server Error 500</h1>")
 		return
+
 	}
+	w.WriteHeader(status)
 }
 
 // working with maps here but if it has to be a struct it will be more efficient
@@ -50,9 +54,10 @@ func GetApis() map[string]string {
 func FetchUrl[T any](holder *T, url string) {
 }
 
-func FetchData[T any](holder *T, name_api ...string) { // important
+func FetchData[T any](holder *T, wg *sync.WaitGroup, name_api ...string) { // important
 	// artists ghadi nkhdmuh by default ila la
 	// we will fetch the url 3adii
+	defer wg.Done()
 	url_fetched := "artists"
 	api := GetApis()[url_fetched]
 	if len(name_api) == 1 {
