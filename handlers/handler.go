@@ -13,7 +13,7 @@ type ArtistHanlder struct{}
 
 var (
 	Artist        []artist
-	artistUrls, _ = regexp.Compile(`^artists\?id=\d+$`)
+	artistUrls, _ = regexp.Compile(`^artists\?id=`)
 )
 
 func GetUsers(w http.ResponseWriter, r *http.Request) {
@@ -34,7 +34,10 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	)
 	user_id, _ := strconv.Atoi(r.URL.Query().Get("id"))
 	if Artist != nil {
-
+		if user_id > len(Artist) || user_id <= 0 {
+			renderTemplate(w, "error.html", http.StatusBadRequest, http.StatusBadRequest)
+			return
+		}
 		_, ok := Artist[user_id-1].Locations.(string)
 		if ok {
 			wait_group.Add(3)
@@ -51,7 +54,14 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	} else {
 		api := API + "/artists/" + strconv.Itoa(user_id)
-		FetchData(&artist, &wait_group, api)
+		wait_group.Add(1)
+		go FetchData(&artist, &wait_group, api)
+		wait_group.Wait()
+		
+		if artist.Id==0 {
+			renderTemplate(w, "error.html", http.StatusBadRequest, http.StatusBadRequest)
+			return 
+		}
 		_, ok := artist.Locations.(string)
 		if ok {
 			wait_group.Add(3)
@@ -67,25 +77,13 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// There is a problem in this demarch
-// while we can use the function to fetch the data
-// But the the first way is more useful
-
-// func MethodNotAlowed(w http.ResponseWriter, r *http.Request) {
-// 	w.WriteHeader(http.StatusMethodNotAllowed)
-// 	renderTemplate(w, "error.html", http.StatusMethodNotAllowed)
-// }
-
-// func NotFound(w http.ResponseWriter, r *http.Request) {
-// 	w.WriteHeader(http.StatusNotFound)
-// 	renderTemplate(w, "error.html", http.StatusNotFound)
-// }
-
 func (A ArtistHanlder) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch {
 	case r.Method == http.MethodGet && artistUrls.MatchString(r.URL.Path[1:]+"?"+r.URL.RawQuery):
 		GetUser(w, r)
-	case r.Method == http.MethodGet && (r.URL.Path == "/" || r.URL.Path[1:] == "artists") && len(r.URL.Query()) == 0:
+	case r.Method == http.MethodGet && r.URL.Path == "/" && len(r.URL.Query()) == 0:
+		GetUsers(w, r)
+	case r.Method == http.MethodGet && (r.URL.Path == "/artists/" || r.URL.Path == "/artists") && len(r.URL.Query()) == 0:
 		GetUsers(w, r)
 	case r.Method == http.MethodPost:
 		renderTemplate(w, "error.html", http.StatusMethodNotAllowed, http.StatusMethodNotAllowed)
@@ -94,3 +92,5 @@ func (A ArtistHanlder) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		renderTemplate(w, "error.html", http.StatusNotFound, http.StatusNotFound)
 	}
 }
+
+

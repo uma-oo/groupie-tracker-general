@@ -14,9 +14,14 @@
         <span>{{range .Members}}{{.}} <br> {{end}}</span>
         <h4>Creation Date: {{.CreationDate}}</h4>
         <h4>First Album: {{.FirstAlbum}}</h4>
-        <h4>Concert Dates: {{index .ConcertDates.Dates}}</h4>
-        <h4>Locations: {{index .Locations.Locations}} </h4>
-        <h4>Relations: {{index .Relations.DatesLocations}}</h4>
+        <h4>Concert Dates:</h4>
+        {{ range index .ConcertDates.Dates}}<span>{{.}}</span><br>{{end}}
+        <h4>Locations: </h4>
+         {{range index .Locations.Locations }}<span>{{.}}</span><br>{{end}}
+        <h4>Relations: </h4>    
+        {{range $key, $value := index .Relations.DatesLocations}}
+        <strong>{{ $key }}</strong>: {{ range $value }} <li>{{.}}</li><br> {{end}}
+        {{end}}
     </div>
 
 </body>
