@@ -21,7 +21,7 @@ func renderTemplate(w http.ResponseWriter, tmp string, data interface{}, status 
 	}
 	var buf bytes.Buffer
 
-	err = temp.Execute(&buf , data)
+	err = temp.Execute(&buf, data)
 	if err != nil {
 		fmt.Println("Error there", err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -55,7 +55,6 @@ func GetApis() map[string]string {
 	return map_api
 }
 
-
 func FetchData[T any](holder *T, wg *sync.WaitGroup, name_api ...string) { // important
 	// artists ghadi nkhdmuh by default ila la
 	// we will fetch the url 3adii
@@ -77,6 +76,3 @@ func FetchData[T any](holder *T, wg *sync.WaitGroup, name_api ...string) { // im
 		panic(err)
 	}
 }
-
-
-func IsValidQuery()

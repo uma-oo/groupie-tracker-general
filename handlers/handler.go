@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"regexp"
 	"strconv"
@@ -13,7 +14,7 @@ type ArtistHanlder struct{}
 
 var (
 	Artist        []artist
-	artistUrls, _ = regexp.Compile(`^artists\?id=`)
+	artistUrls, _ = regexp.Compile(`^artists\?id=\d*`)
 )
 
 func GetUsers(w http.ResponseWriter, r *http.Request) {
@@ -21,7 +22,7 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 	wait_group.Add(1)
 	go FetchData(&Artist, &wait_group)
 	wait_group.Wait()
-	renderTemplate(w, "index.html", Artist, http.StatusOK)
+	renderTemplate(w, "Artists.html", Artist, http.StatusOK)
 }
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
@@ -33,9 +34,14 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		wait_group sync.WaitGroup
 	)
 	user_id, _ := strconv.Atoi(r.URL.Query().Get("id"))
+	if r.URL.Query().Get("id") == "" {
+		fmt.Println("here")
+		renderTemplate(w, "error.html", http.StatusBadRequest, http.StatusBadRequest)
+		return
+	}
 	if Artist != nil {
 		if user_id > len(Artist) || user_id <= 0 {
-			renderTemplate(w, "error.html", http.StatusBadRequest, http.StatusBadRequest)
+			renderTemplate(w, "error.html", http.StatusNotFound, http.StatusNotFound)
 			return
 		}
 		_, ok := Artist[user_id-1].Locations.(string)
@@ -49,7 +55,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 			Artist[user_id-1].Locations = location
 			Artist[user_id-1].Relations = relation
 		}
-
 		renderTemplate(w, "Artist.html", Artist[user_id-1], http.StatusOK)
 
 	} else {
@@ -57,10 +62,10 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		wait_group.Add(1)
 		go FetchData(&artist, &wait_group, api)
 		wait_group.Wait()
-		
-		if artist.Id==0 {
-			renderTemplate(w, "error.html", http.StatusBadRequest, http.StatusBadRequest)
-			return 
+
+		if artist.Id == 0 && artist.Name == "" {
+			renderTemplate(w, "error.html", http.StatusNotFound, http.StatusNotFound)
+			return
 		}
 		_, ok := artist.Locations.(string)
 		if ok {
@@ -82,15 +87,13 @@ func (A ArtistHanlder) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case r.Method == http.MethodGet && artistUrls.MatchString(r.URL.Path[1:]+"?"+r.URL.RawQuery):
 		GetUser(w, r)
 	case r.Method == http.MethodGet && r.URL.Path == "/" && len(r.URL.Query()) == 0:
-		GetUsers(w, r)
-	case r.Method == http.MethodGet && (r.URL.Path == "/artists/" || r.URL.Path == "/artists") && len(r.URL.Query()) == 0:
+		renderTemplate(w, "index.html", nil, http.StatusOK)
+	case r.Method == http.MethodGet && (r.URL.Path == "/artists/" || r.URL.Path == "/artists"  ) && len(r.URL.Query()) == 0:
+		
 		GetUsers(w, r)
 	case r.Method == http.MethodPost:
 		renderTemplate(w, "error.html", http.StatusMethodNotAllowed, http.StatusMethodNotAllowed)
-
 	default:
 		renderTemplate(w, "error.html", http.StatusNotFound, http.StatusNotFound)
 	}
 }
-
-

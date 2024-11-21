@@ -6,9 +6,14 @@
     <title>Artists</title>
 </head>
 <body>
-    {{template header}}
     <div>
-   <button ><a href="http://localhost:3535/artists">gfhfgh</a></button>
+    {{range .}} 
+    
+    <a href="http://localhost:3535/artists?id={{.Id}}"><img src="{{ .Image}}" alt="Image Band"></a><br>
+    <h3 >{{ .Name}}</h3>
+
+    
+    {{end}}
 
 </div>
 </body>
