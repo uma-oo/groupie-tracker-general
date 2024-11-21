@@ -1,0 +1,19 @@
+/* comments in css  */
+/* color are : 
+#171717
+#444444
+#DA0037
+#EDEDED */
+
+.body{
+    display: flex;
+    gap:50px
+}
+
+.info {
+  
+}
+
+.image {
+
+}

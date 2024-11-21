@@ -3,13 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="/assets/styles/index.css">
     <title>Artists</title>
 </head>
 <body>
-    {{template header}}
-    <div>
-   <button ><a href="http://localhost:3535/artists">gfhfgh</a></button>
+    {{template "header"}}
+    <main class="body">
+        <div class="info">
+            <span class="quote"><q>Life seems to go on without effort when I am filled with music. </q>― George Eliot</span><br>
+            
+             <a href="http://localhost:3535/artists/"><button>Let's get started!</button></a>
+        </div>
 
-</div>
+        <div class="image">
+            <img src="/assets/images/image.avif" alt="image">
+        </div>
+    </main>
+    
+   {{template "footer"}}
+
 </body>
 </html>
