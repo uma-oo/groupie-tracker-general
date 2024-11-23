@@ -3,13 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/styles/error.css">
     <title>Error!!</title>
 </head>
 <body>
-    <div>
-        <h1>{{if eq . 404 }} 404 Page Not Found!!</h1>
-        <h1>{{else if eq . 400 }} 400 Bad Request!!</h1>
-        {{end}}
-    </div>
+    <main>
+        <div class="Error">
+            <h1>{{if eq . 404 }} 404 Page Not Found!!</h1>
+            <h1>{{else if eq . 400 }} 400 Bad Request!!</h1>
+            <h1>{{else if eq . 405 }} 405 Method Not Allowed!!</h1>
+            <h1>{{else if eq . 500 }} 500 Internal Server Error!!</h1>
+            {{end}}
+        </div>
+        
+         <p><a href="http://localhost:3535/artists/">Go back to home Page:</a></p>
+    </main>
 </body>
 </html>

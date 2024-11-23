@@ -4,28 +4,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/styles/artist.css">
     <title>Artist</title>
 </head>
 
 <body>
-    <div> 
-        <img src="{{ .Image}}"><br>
-        <h4>Name: {{.Name}}</h4><br>
-        <span>{{range .Members}}{{.}} <br> {{end}}</span>
-        <h4>Creation Date: {{.CreationDate}}</h4>
-        <h4>First Album: {{.FirstAlbum}}</h4>
-        <h4>Concert Dates:</h4>
-        {{ range index .ConcertDates.Dates}}<span>{{.}}</span><br>{{end}}
-        <h4>Locations: </h4>
-         {{range index .Locations.Locations }}<span>{{.}}</span><br>{{end}}
-        <h4>Relations: </h4>    
-        {{range $key, $value := index .Relations.DatesLocations}}
-        <strong>{{ $key }}</strong>: {{ range $value }} <li>{{.}}</li><br> {{end}}
-        {{end}}
-    </div>
+    <main>
+        <div class="header">
+            <a href="http://localhost:3535/artists/">
+                <img class="icon" src="/assets/images./image.png">
+            </a>
+            <h1>{{.Name}}</h1>
+        </div>
+        
 
+        <div class="artist-holder">
+            <div class="image-holder">
+                <img src="{{ .Image}}">
+            </div>
+            <div class="artist-general">
+
+
+                <h4>Members:</h4>
+                <ul>
+                    {{range .Members}}
+
+                    <li>{{.}}</li>
+                    {{end}}
+                </ul>
+                <h4>Creation Date:</h4>
+                <p> {{.CreationDate}}</p>
+                <h4>First Album:</h4>
+                <p>{{.FirstAlbum}}</p>
+            </div>
+
+            <div class="dates">
+                <h4>Concert Dates:</h4>
+                <ul>
+                    {{ range index .ConcertDates.Dates}}
+                    <li>
+                        {{.}}
+                    </li>
+                    {{end}}
+                </ul>
+            </div>
+
+            <div class="locations">
+                <h4>Locations: </h4>
+
+                <ul>
+                    {{range index .Locations.Locations }}
+                    <li>
+                        {{.}}
+                    </li>
+                    {{end}}
+                </ul>
+
+            </div>
+
+            <div class="relations">
+                <h4>Relations: </h4>
+                <ul>
+                    {{range $key, $value := index .Relations.DatesLocations}}
+                    <li>
+                        {{ $key }}
+                        <ul>
+                            {{ range $value }}
+                            <li>{{.}}</li>
+                            {{end}}
+                        </ul>
+                    </li>
+                    {{end}}
+                </ul>
+
+            </div>
+
+        </div>
+
+    </main>
 </body>
 
 </html>
-
-

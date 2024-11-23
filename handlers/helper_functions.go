@@ -12,7 +12,7 @@ import (
 )
 
 func renderTemplate(w http.ResponseWriter, tmp string, data interface{}, status int) {
-	temp, err := template.ParseFiles("./templates/" + tmp, "./templates/header.html", "./templates/footer.html")
+	temp, err := template.ParseFiles("./templates/" + tmp)
 	if err != nil {
 		fmt.Println("Error here", err)
 		w.WriteHeader(http.StatusInternalServerError)

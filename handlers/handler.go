@@ -55,7 +55,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 			Artist[user_id-1].Locations = location
 			Artist[user_id-1].Relations = relation
 		}
-		renderTemplate(w, "Artist.html", Artist[user_id-1], http.StatusOK)
+		renderTemplate(w, "artist.html", Artist[user_id-1], http.StatusOK)
 
 	} else {
 		api := API + "/artists/" + strconv.Itoa(user_id)
@@ -87,7 +87,7 @@ func (A ArtistHanlder) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case r.Method == http.MethodGet && artistUrls.MatchString(r.URL.Path[1:]+"?"+r.URL.RawQuery):
 		GetUser(w, r)
 	case r.Method == http.MethodGet && r.URL.Path == "/" && len(r.URL.Query()) == 0:
-		renderTemplate(w, "index.html", nil, http.StatusOK)
+		GetUsers(w,r)
 	case r.Method == http.MethodGet && (r.URL.Path == "/artists/" || r.URL.Path == "/artists"  ) && len(r.URL.Query()) == 0:
 		
 		GetUsers(w, r)
