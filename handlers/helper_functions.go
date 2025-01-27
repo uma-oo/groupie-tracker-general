@@ -33,8 +33,6 @@ func renderTemplate(w http.ResponseWriter, tmp string, data interface{}, status 
 	w.Write(buf.Bytes())
 }
 
-// working with maps here but if it has to be a struct it will be more efficient
-// for later
 
 func GetApis() map[string]string {
 	var map_api map[string]string
@@ -55,9 +53,7 @@ func GetApis() map[string]string {
 	return map_api
 }
 
-func FetchData[T any](holder *T, wg *sync.WaitGroup, name_api ...string) { // important
-	// artists ghadi nkhdmuh by default ila la
-	// we will fetch the url 3adii
+func FetchData(holder any, wg *sync.WaitGroup, name_api ...string) { 
 	defer wg.Done()
 	url_fetched := "artists"
 	api := GetApis()[url_fetched]

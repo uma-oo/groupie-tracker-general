@@ -1,10 +1,11 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
+	"os"
 	"regexp"
 	"strconv"
+	"strings"
 	"sync"
 )
 
@@ -35,7 +36,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	)
 	user_id, _ := strconv.Atoi(r.URL.Query().Get("id"))
 	if r.URL.Query().Get("id") == "" {
-		fmt.Println("here")
 		renderTemplate(w, "error.html", http.StatusBadRequest, http.StatusBadRequest)
 		return
 	}
@@ -87,13 +87,32 @@ func (A ArtistHanlder) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case r.Method == http.MethodGet && artistUrls.MatchString(r.URL.Path[1:]+"?"+r.URL.RawQuery):
 		GetUser(w, r)
 	case r.Method == http.MethodGet && r.URL.Path == "/" && len(r.URL.Query()) == 0:
-		GetUsers(w,r)
-	case r.Method == http.MethodGet && (r.URL.Path == "/artists/" || r.URL.Path == "/artists"  ) && len(r.URL.Query()) == 0:
-		
 		GetUsers(w, r)
-	case r.Method == http.MethodPost:
+	case r.Method != http.MethodGet:
 		renderTemplate(w, "error.html", http.StatusMethodNotAllowed, http.StatusMethodNotAllowed)
 	default:
 		renderTemplate(w, "error.html", http.StatusNotFound, http.StatusNotFound)
+	}
+}
+
+func HandleAssets(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		renderTemplate(w, "error.html", http.StatusMethodNotAllowed, http.StatusMethodNotAllowed)
+		return
+	}
+	if !strings.HasPrefix(r.URL.Path, "/assets") {
+		renderTemplate(w, "error.html", http.StatusNotFound, http.StatusNotFound)
+		return
+	} else {
+		file_info, err := os.Stat(r.URL.Path[1:])
+		if err != nil {
+			renderTemplate(w, "error.html", http.StatusNotFound, http.StatusNotFound)
+			return
+		} else if file_info.IsDir() {
+			renderTemplate(w, "error.html", http.StatusForbidden, http.StatusForbidden)
+			return
+		} else {
+			http.ServeFile(w, r, r.URL.Path[1:])
+		}
 	}
 }

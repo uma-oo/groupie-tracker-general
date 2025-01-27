@@ -11,7 +11,7 @@
 }
 
 
-.artist-general, .dates , .locations, .relations {
+.section {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
     width: 500px;
@@ -20,11 +20,9 @@
     margin-bottom: 20px;
     text-align: center;
     margin: auto;
+    box-shadow: 0 8px 8px 0 rgba(0,0,0,0.3);
 }
 
-.artist-general:hover, .dates:hover,.locations:hover , .relations:hover, .image-holder:hover{
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.3);
-}
 h1 {
     padding: 30px;
     width:50%;
@@ -43,6 +41,9 @@ img{
     width: 100%;
     height: 100%;
 }
+
+
+
 .image-holder{
     border-radius: 50%;
     overflow: hidden;
@@ -52,7 +53,9 @@ img{
     margin: auto;
 }
 
-
+.image-holder {
+    animation: rotate 1s ease-in-out;
+}
 
 p{
     color: rgb(75, 71, 71);
@@ -113,6 +116,20 @@ li>ul>li {
 .header {
     display: flex;
     flex-direction: row;
-   
-    
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+        scale: 1;
+    }
+    50%{
+        transform: rotate(360deg);
+        scale:0.9;
+
+    }
+    100%{
+        transform: rotate(0deg);
+        scale: 1.1;
+    }
 }

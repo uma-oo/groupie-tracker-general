@@ -2,14 +2,30 @@
 
 
 
+
+.whole {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+
 .error {
     margin: auto;
 }
 
 .error>h1{
     color: rgb(75, 71, 71);
-    font-size: larger;
     font-family: 'Courier New', Courier, monospace;
     margin: auto;
     text-align: center;
 }
+
+
+a {
+    margin: auto;
+   
+    
+    align-items: center;
+}
+

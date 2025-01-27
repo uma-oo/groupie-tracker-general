@@ -9,7 +9,6 @@
     border-radius: 10px;
     border: solid #e68686 4px;
     margin-bottom: 20px;
-
   }
   
   .artist:hover {
@@ -51,3 +50,22 @@
     padding-top: 40px;
 }
 
+.appear_animation {
+  animation-timeline: view(100% 10%);
+  animation-name: appear;
+  animation-fill-mode: backwards;
+  animation-duration: 1ms;
+  animation-timing-function: linear;
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

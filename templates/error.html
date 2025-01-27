@@ -1,22 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/styles/error.css">
     <title>Error!!</title>
 </head>
+
 <body>
     <main>
-        <div class="Error">
-            <h1>{{if eq . 404 }} 404 Page Not Found!!</h1>
-            <h1>{{else if eq . 400 }} 400 Bad Request!!</h1>
-            <h1>{{else if eq . 405 }} 405 Method Not Allowed!!</h1>
-            <h1>{{else if eq . 500 }} 500 Internal Server Error!!</h1>
-            {{end}}
+        <div class="whole">
+            <div class="error">
+                <h1>{{if eq . 404 }} 404 Page Not Found!!</h1>
+                <h1>{{else if eq . 400 }} 400 Bad Request!!</h1>
+                <h1>{{else if eq . 405 }} 405 Method Not Allowed!!</h1>
+                <h1>{{else if eq . 500 }} 500 Internal Server Error!!</h1>
+                <h1>{{else if eq . 403 }} 403 Access Forbidden!!</h1>
+                {{end}}
+            </div>
+
+            <a href="http://localhost:3535/">
+                <img class="icon" src="/assets/images/image.png">
+            </a>
         </div>
-        
-         <p><a href="http://localhost:3535/artists/">Go back to home Page:</a></p>
     </main>
 </body>
+
 </html>

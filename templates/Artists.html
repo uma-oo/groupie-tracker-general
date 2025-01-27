@@ -11,12 +11,10 @@
 <body>
     <main>
        <div class="cards">
-
         {{range .}}
-        <div class="artist">
-           
+        <div class="artist appear_animation">
             <a href="http://localhost:3535/artists?id={{.Id}}">
-                <img src="{{ .Image}}" alt="Image Band">
+                <img loading="lazy" src="{{ .Image}}" alt="Image Band">
                 <div class="container">
                     <h3>{{ .Name}}</h3>
                 </div>

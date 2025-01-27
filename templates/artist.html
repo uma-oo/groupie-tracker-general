@@ -11,24 +11,21 @@
 <body>
     <main>
         <div class="header">
-            <a href="http://localhost:3535/artists/">
-                <img class="icon" src="/assets/images./image.png">
+            <a href="http://localhost:3535/">
+                <img class="icon" src="/assets/images/image.png">
             </a>
             <h1>{{.Name}}</h1>
         </div>
-        
+
 
         <div class="artist-holder">
             <div class="image-holder">
                 <img src="{{ .Image}}">
             </div>
-            <div class="artist-general">
-
-
+            <div class="artist-general section">
                 <h4>Members:</h4>
                 <ul>
                     {{range .Members}}
-
                     <li>{{.}}</li>
                     {{end}}
                 </ul>
@@ -38,7 +35,7 @@
                 <p>{{.FirstAlbum}}</p>
             </div>
 
-            <div class="dates">
+            <div class="dates section">
                 <h4>Concert Dates:</h4>
                 <ul>
                     {{ range index .ConcertDates.Dates}}
@@ -49,7 +46,7 @@
                 </ul>
             </div>
 
-            <div class="locations">
+            <div class="locations section">
                 <h4>Locations: </h4>
 
                 <ul>
@@ -62,7 +59,7 @@
 
             </div>
 
-            <div class="relations">
+            <div class="relations section">
                 <h4>Relations: </h4>
                 <ul>
                     {{range $key, $value := index .Relations.DatesLocations}}
